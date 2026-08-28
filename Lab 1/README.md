@@ -6,6 +6,8 @@ Hong Yuan Cao, Yun-Chung Liu
 
 **THE MASTERWORK YOU DREW FROM THE HAT:**
 
+GLOWORM - Hasbro 1982
+
 ---
 
 One way to understand greatness is to look to the greats. Just as painters learn
@@ -92,6 +94,10 @@ the interaction*:
 **Describe your masterwork here, in your own words. What is the core interaction
 someone would recognize it by?**
 
+Glo Worm is a night light plush toy primarily designed for children. The core interaction is a squeeze; as the user squeezes the toy, it lights up, and as they release force, it then dims down.
+
+I would say Glo Worm is famous by how it combined a stuffed animal with a portable night-light. By doing so, it makes Glo Worm feel less like a device and more like a comforting companion the child can control and cuddle. The main strengths are how simple it is to use, activating with merely a small squeeze, but at the same time is also its weakness, because it then limits the interation to only one response.
+
 ## Part A. Plan
 
 For your masterwork, reconstruct the interaction as a scene:
@@ -105,16 +111,37 @@ For your masterwork, reconstruct the interaction as a scene:
 
 **Describe your setting, players, activity, and goals here.**
 
+The Glo Worm is most likely used in a cradle or in bed for children. Apart from children, a parent or a caregiver might also be present to comfort the child with the Glo Worm.
+
+The activity is a bedtime routine. As the lights go off the child could squeeze the toy to give some light, and as they fall alseep and lose grip, the lights dim down. Another squeeze will bring back the light if they wake up again. The child's goal would be to feel less alone in the dark, whereas the parent's goal would be to calm their child and to be able to leave the room.
+
 Now **sketch a 3 storyboards** of the interaction you are recreating. (The number may depend on the thing you drew, but stretch your thinking!) They
 don't need to be beautiful, but they must capture and communicate not only the behavior of the light, but how it affects
 and the people around it. If you're new to storyboarding, read
 [this explanation](https://www.nngroup.com/articles/storyboards-visualize-ideas/).
 
-**Include pictures of your storyboards here.**
+<table>
+  <tr>
+    <th>Squeeze to Glow</th>
+    <th>Bedtime Comfort</th>
+  </tr>
+  <tr>
+    <td width="50%"><a href="assets/storyboard-1-squeeze-to-glow.jpg"><img src="assets/storyboard-1-squeeze-to-glow.jpg" alt="Storyboard showing the direct squeeze-to-glow interaction" width="100%"></a></td>
+    <td width="50%"><a href="assets/storyboard-2-bedtime-comfort.jpg"><img src="assets/storyboard-2-bedtime-comfort.jpg" alt="Storyboard showing a parent giving Glo Worm to a child at bedtime" width="100%"></a></td>
+  </tr>
+  <tr>
+    <th colspan="2">Nighttime Reassurance</th>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><a href="assets/storyboard-3-nighttime-reassurance.jpg"><img src="assets/storyboard-3-nighttime-reassurance.jpg" alt="Storyboard showing a child using Glo Worm after waking in the dark" width="50%"></a></td>
+  </tr>
+</table>
 
 Use the storyboards to decide what interaction to prototype.
 
 **Summarize the feedback you got here.**
+
+We showed the storyboards to our peers. They understood that squeezing Glo Worm caused it to light up and that releasing it turned the light off. The nighttime-reassurance storyboard communicated the interaction most clearly because it showed the complete cause and effect in only four frames. The bedtime-comfort storyboard better explained the relationship between the child, parent, and toy, but the squeeze itself was less visually obvious. Based on this feedback, we decided to prototype the nighttime.
 
 ## Part B. Act out the Interaction
 
