@@ -151,9 +151,16 @@ it aloud.
 
 **Are there things that seemed better on paper than when acted out?**
 
+When we acted out the interaction, we realized that the squeeze-to-light connection was less obvious in person than it appeared in the storyboards. The actor needed to make the squeezing motion visible, and the light needed to respond immediately. If there was too much delay, it looked like someone had simply turned on a phone. The room also needed to be dark enough for the glow to affect the scene (unfortunately we didn't have black-out curtains).
+
 **Did new ideas about the piece surface once you were on your feet?**
 
+Acting it out showed us that the child's reaction is an important part of the interaction. Pausing in darkness before finding Glo Worm, holding it close, and visibly relaxing after it lights up helped communicate that the toy provides comfort rather than just illumination.
+
 **Are there key moments in the interaction where things could go in a different direction?**
+
+The interaction could change if the child cannot find Glo Worm, releases it too early, or wakes up and needs to squeeze it again. We decided to focus on the clearest path: the child wakes in darkness, finds Glo Worm, squeezes it to produce light, relaxes, and eventually releases it as they fall asleep.
+
 Iterate your storyboards to capture key non-sequential aspects of the interaction. 
 
 ## Part C. Prototype the Light (light first!)
@@ -172,6 +179,8 @@ masterwork should you consider layering in a second modality (sound, vibration,
 motion). If in doubt, keep polishing the light. The other modalities are next
 week's business.
 
+We used Tinkerbelle to prototype Glo Worm's light behavior with a phone. We selected warm yellow for the glow and black for the off state. Eric (Yun-Chung) controlled the light from the computer while I tested the squeezing motion. We found that the response needed to be immediate for the squeeze to feel connected to the glow. Because the room could not become completely dark, we used maximum phone brightness to make the change more visible.
+
 ## Part D. Wizard the Device
 
 Set up a "wizard" arrangement so one person can secretly drive the light while
@@ -179,7 +188,9 @@ another acts with it — this is how you make the device feel alive without
 building any real electronics. (Zoom works well for recording; you can pin the
 video feed of whichever scene you want to capture.)
 
-**Include your first attempts at recording the wizarded set-up here.**
+[Watch the first wizarded setup test](assets/wizard-setup-test.mp4)
+
+Since we could not build a real Glo Worm, we used my arm to represent its soft body and a phone to represent its glowing head. Eric (Yun-Chung) acted as the hidden wizard and operated Tinkerbelle in sync with my squeezing and releasing motions. The short test above helped us rehearse this coordination before recording the final scene.
 
 ## Part E. (optional) Costume the Device
 
@@ -201,11 +212,13 @@ and calm for a bedroom?
 the top of this lab: a viewer who knows the piece should recognize it; a viewer
 who doesn't should come away understanding what it's famous for. How might you illustrate the non-sequential aspects of the interaction in the sketch?
 
-**Include your video here.**
+[Watch the final video sketch](assets/final-video-sketch.mp4)
 
 **Please indicate who you collaborated with on this lab.** Be generous in
 acknowledging their contributions, and credit any other influences (YouTube,
 Github, Twitter, a friend who lent you a lamp) that informed your recreation.
+
+Eric (Yun-Chung) helped me record the scene and acted as the hidden wizard during the final performance. The video shows how Glo Worm works as both a night-light and a comforting companion for a child who wakes up in the dark.
 
 ---
 
