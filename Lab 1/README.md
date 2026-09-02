@@ -4,6 +4,8 @@ _This project is to be done in teams of 2._
 
 Hong Yuan Cao, Yun-Chung Liu
 
+Note: We thought that each person had to do their own masterwork, so despite being a group, we did our own individual masterwork.
+
 **THE MASTERWORK YOU DREW FROM THE HAT:**
 
 GLOWORM - Hasbro 1982
@@ -234,7 +236,14 @@ guess the masterwork and the goals of the characters, and ask about anything tha
 wasn't clear.
 
 **Who were the other groups you kibitzed with? Add links to their project pages here.**
+
+- [Terence Zhang and Jiesen Huang — The Campfire](https://github.com/certaindragon3/Interactive-Lab-Hub/tree/Fall2026/Lab%201): We saw a person tend a fire that brightened, flared, and faded. We understood the goal as keeping the group warm without getting too close. We wondered how the delayed flare could be made clearer.
+- [Jovian Wang and Viktor Radev — Beacon Chains](https://github.com/jovianw/Interactive-Lab-Hub/blob/Fall2026/Lab%201/README.md): We saw one light trigger the next light in a chain. We understood the goal as passing a warning across a long distance. We wondered how they could show a longer chain with only a few phones.
+- [Yun-Chung Liu — Pulse Room](https://github.com/eliu1122/Interactive-Lab-Hub/tree/Fall2026/Lab%201): We saw a heartbeat become a repeating pulse of light. We understood that in his interaction it was done to tell others that the elderly is safe and well. We wondered if there were any other applications for this interaction, since the Pulse Room is a very creative and broad idea.
+
 **Summarize the feedback you got from your partners here.**
+
+Our partners said the squeeze-to-brightness connection was clear, especially when the light responded immediately. They suggested making the squeezing motion more visible and having the light begin dimming as soon as Glo Worm is released. They also suggested adding a gentle sound cue through Tinkerbelle that responds to the squeeze and fades with the light. This could strengthen the connection between the child's action and Glo Worm's response while making the interaction feel more comforting and alive. They thought we should keep the child's reaction because it clearly communicates that Glo Worm provides emotional comfort as well as light.
 
 ## Remix, Update, or Critique the Master
 
