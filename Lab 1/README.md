@@ -266,6 +266,34 @@ your response engages with what your master was really doing.
 **Document everything here — especially the storyboard and video. Photos of the
 prototype are great too.**
 
+### Remake storyboards
+
+<table>
+  <tr>
+    <th>Thunderstorm Comfort</th>
+    <th>Sibling Comfort</th>
+  </tr>
+  <tr>
+    <td width="50%"><a href="assets/remake-storyboard-1-thunderstorm-comfort.jpg"><img src="assets/remake-storyboard-1-thunderstorm-comfort.jpg" alt="Hand-drawn storyboard showing a child using Glo Worm's light and sound for comfort during a thunderstorm" width="100%"></a></td>
+    <td width="50%"><a href="assets/remake-storyboard-2-sibling-comfort.jpg"><img src="assets/remake-storyboard-2-sibling-comfort.jpg" alt="Hand-drawn storyboard showing a child comforting a sibling after a nightmare with Glo Worm" width="100%"></a></td>
+  </tr>
+  <tr>
+    <th colspan="2">Learning Through Play</th>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><a href="assets/remake-storyboard-3-learning-through-play.jpg"><img src="assets/remake-storyboard-3-learning-through-play.jpg" alt="Hand-drawn storyboard showing a parent and child learning the squeeze response together" width="50%"></a></td>
+  </tr>
+</table>
+
+These three storyboards explore how the same light-and-sound response can support different interactions: a child finding comfort during a thunderstorm, one sibling reassuring another after a nightmare, and a parent helping a child learn through play. The final video follows the thunderstorm scene, showing the child's reaction alongside the changes in light and sound as they squeeze and release Glo Worm.
+
+### Final remake video: Comfort during a thunderstorm
+
+[Watch the remake with sound and subtitles](assets/remake-thunderstorm.mp4)
+
+This remake adds gentle sound to Glo Worm's light response. A child wakes during a thunderstorm and squeezes the toy for comfort. The chimes grow stronger with the squeeze and fade as the child releases it.
+
+Thunder, rain, and chimes were synthesized and added in post-production as sound effects to improve the "sound" aspect of the masterwork.
 ---
 
 
