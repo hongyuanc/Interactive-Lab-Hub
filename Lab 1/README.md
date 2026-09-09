@@ -214,7 +214,7 @@ and calm for a bedroom?
 the top of this lab: a viewer who knows the piece should recognize it; a viewer
 who doesn't should come away understanding what it's famous for. How might you illustrate the non-sequential aspects of the interaction in the sketch?
 
-[Watch the final video sketch](assets/final-video-sketch.mp4)
+https://github.com/user-attachments/assets/40e4ee94-e61b-4bc9-8f9c-b89b1efdc7df
 
 **Please indicate who you collaborated with on this lab.** Be generous in
 acknowledging their contributions, and credit any other influences (YouTube,
@@ -285,15 +285,20 @@ prototype are great too.**
   </tr>
 </table>
 
-These three storyboards explore how the same light-and-sound response can support different interactions: a child finding comfort during a thunderstorm, one sibling reassuring another after a nightmare, and a parent helping a child learn through play. The final video follows the thunderstorm scene, showing the child's reaction alongside the changes in light and sound as they squeeze and release Glo Worm.
+For the remake, I wanted to be a little more creative and move beyond the typical "comfort at bedtime" scenario from my first version. I kept squeezing as the main input and explored how adding sound could change both the situation and the relationships around the toy. Rather than only changing what Glo Worm does, I also considered who uses it, who else is present, and what they need from it.
+
+The three storyboards explore different directions. In Thunderstorm Comfort, the child responds to a specific frightening event, with the toy's gentle sound contrasting with the thunder. In Sibling Comfort, Glo Worm becomes a way for one child to reassure another. Learning Through Play moves beyond bedtime entirely: a parent and child take turns exploring how squeeze strength changes the light and sound. These scenes expand the interaction from individual comfort to caring for someone else and learning together.
+
+The final video develops the thunderstorm storyboard into a performed scene. It shows the child waking, reaching for Glo Worm, trying different squeeze strengths, and releasing it before returning to sleep. The drawings document the alternative situations I explored, while the video demonstrates one of those directions through the actor's gestures, expressions, and the changing light and sound.
 
 ### Final remake video: Comfort during a thunderstorm
 
-[Watch the remake with sound and subtitles](assets/remake-thunderstorm.mp4)
+https://github.com/user-attachments/assets/9bd8ddb4-2d73-468b-9117-057c15985624
 
 This remake adds gentle sound to Glo Worm's light response. A child wakes during a thunderstorm and squeezes the toy for comfort. The chimes grow stronger with the squeeze and fade as the child releases it.
 
 Thunder, rain, and chimes were synthesized and added in post-production as sound effects to improve the "sound" aspect of the masterwork.
+
 ---
 
 
