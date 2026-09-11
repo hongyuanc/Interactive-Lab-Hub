@@ -1,5 +1,6 @@
 # Interactive Prototyping: The Clock of Pi
 **NAMES OF COLLABORATORS HERE**
+Hong Yuan Cao (hc2343), Yun-Chung Liu (yl4445)
 
 Does it feel like time is moving strangely during this semester?
 
@@ -9,6 +10,8 @@ It is worth spending a little time thinking about how you mark time, and what wo
 
 **Please indicate anyone you collaborated with on this Lab here.**
 Be generous in acknowledging their contributions! And also recognizing any other influences (e.g. from YouTube, Github, Twitter) that informed your design. 
+
+Hong and Yun-Chung both worked on setting up the Pi, along with brainstorming the storyboards for the clocks.
 
 ## Prep
 
@@ -158,10 +161,25 @@ You can look in `image.py` for an example of how to display an image on the scre
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
 
+### Screen test photos
+
+The startup screen shows the Pi's network information and unique MAC address.
+
+<img src="assets/pi-network-mac.jpg" alt="Raspberry Pi displaying its IP address, Hong network, and unique MAC address" width="720">
+
+The MiniPiTFT displays green during the screen test.
+
+<img src="assets/pi-screen-test-green.jpg" alt="Raspberry Pi MiniPiTFT displaying green during the screen test" width="720">
 
 ## Part D. 
 ### Set up the Display Clock Demo
 Work on `screen_clock.py`, try to show the time by filling in the while loop (at the bottom of the script where we noted "TODO" for you). You can use the code in `cli_clock.py` and `stats.py` to figure this out.
+
+### Working clock
+
+The completed [screen_clock.py](screen_clock.py) displays the date and time on the MiniPiTFT.
+
+<img src="assets/pi-clock-demo.jpg" alt="Raspberry Pi displaying the date and time on a red background" width="720">
 
 ### How to Edit Scripts on Pi
 Option 1. One of the ways for you to edit scripts on Pi through terminal is using [`nano`](https://linuxize.com/post/how-to-use-nano-text-editor/) command. You can go into the `screen_clock.py` by typing the follow command line:
@@ -192,7 +210,23 @@ Another might be novel units of time. How do you measure a year? [In daylights? 
 We strongly discourage literal digital or analog clock display: Be creative.
 
 
-** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
+### Idea 1: Sun and moon clock
+
+The sun and moon move across the display to represent early morning, noon, evening, and midnight.
+
+<img src="assets/storyboard-sun-moon.jpg" alt="Four-panel storyboard showing the sun and moon moving across the sky throughout the day" width="960">
+
+### Idea 2: Daily routine clock
+
+An animated character represents the time of day through activities: sleeping early in the morning, running in the afternoon, reading in the evening, and returning to bed at night. The background changes with the time of day.
+
+<img src="assets/storyboard-daily-routine.jpg" alt="Four-panel storyboard of a character sleeping, running, reading, and returning to bed" width="960">
+
+### Idea 3: Coffee clock
+
+Coffee becomes colder as the day goes on, changing from a steaming cup to an iced drink as a visual representation of passing time.
+
+<img src="assets/storyboard-coffee.jpg" alt="Two-panel storyboard showing hot coffee transitioning to an iced drink as the day progresses" width="960">
 
 
 
