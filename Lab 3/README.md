@@ -2,6 +2,8 @@
 
 **NAMES OF COLLABORATORS HERE**
 
+Hong Yuan Cao hc2343, Yun-Chung Liu yl4445
+
 [![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://www.youtube.com/embed/Q8FWzLMobx0?start=19)
 
 In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
@@ -109,7 +111,11 @@ The demo script also shows `--output-raw`, which streams audio to the speaker as
 \*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
 (This shell file should be saved to your own repo for this lab.)
 
+File called: greet_my_name.sh
+
 \*\***Then answer: Is the same greeting, in these different voices, the same greeting? Describe one concrete way the voice changed what the utterance seemed to mean or who seemed to be speaking.**\*\*
+
+I used the same Piper voice as the demo for my greeting script: both sounded natural and conversational. However, compared with Piper, eSpeak and Festival sounded much more robotic. Even with the same words, the Piper greeting felt more like a person checking in with me, while the other two felt more like a machine delivering a message.
 
 ## B. Speech to Text
 
@@ -131,7 +137,11 @@ Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. 
 
 \*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
 
+For my five-second recording, base.en took 0.72 seconds to load and 1.96 seconds to transcribe, with a real-time factor of 0.39x. small.en took 197.03 seconds to load and 5.66 seconds to transcribe, with a real-time factor of 1.13x. Both produced the same words, with only a punctuation difference. The small model’s startup wait was especially noticeable. Although loading happens only once in a continuously running system, its transcription was also slower without improving accuracy on this recording. I would easily choose base.en for faster startup and conversational responses.
+
 \*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.
+
+My script uses Piper to ask “How many coffees did you drink today?” and then records a five-second response. Testing with base.en produced the transcript “1,” taking 1.66 seconds with a real-time factor of 0.33x.
 
 ## C. Turn-taking: knowing when someone has stopped talking
 
@@ -153,7 +163,50 @@ Speak, pause, and watch it transcribe. Now change the endpointing threshold — 
 
 \*\***Try both extremes, and something in between. Describe what each one feels like to talk to. Note specifically: at 0.2s, what kinds of normal speech get cut off? At 1.5s, what does the delay make the system seem like?**\*\*
 
-There is no correct value. A system that takes drink orders and a system that listens to someone think out loud want very different thresholds, and the right one depends on what your users are doing with their pauses.
+### Our observations
+
+We tested silence thresholds of 0.2s, 0.4s (the default), and 1.5s using `listen.py`. These runs used the script's default `tiny.en` recognition model.
+
+At 0.2s, the system often split our speech into short fragments instead of capturing full sentences. Pausing within a sentence could end the turn before we finished our thought, making it difficult to speak naturally. The intermediate 0.4s setting also produced many short fragments, so it did not fully solve this problem. At 1.5s, the system captured longer phrases, including hesitations and changes of thought, but required a longer wait before deciding we were finished. This gives the speaker more room to think, at the cost of making the system seem slower to respond.
+
+We also noticed that the beginning of our speech was often missing at both short and long settings. Increasing the end-of-turn silence threshold did not resolve that observation. The transcripts alone cannot establish whether the first words were lost during audio capture, speech detection, or recognition; we would need the original audio and intended words to identify the cause.
+
+**0.2s minimum silence:**
+
+```text
+[0.5s speech, 0.86s to transcribe]  Hello.
+[0.6s speech, 0.91s to transcribe]  Are you doing?
+[0.8s speech, 0.84s to transcribe]  the microphone.
+[1.1s speech, 4.64s to transcribe]  We have some one refill.
+[0.4s speech, 0.75s to transcribe]  Yeah.
+```
+
+**0.4s minimum silence (default):**
+
+```text
+[0.7s speech, 0.80s to transcribe]  Hello.
+[0.4s speech, 0.80s to transcribe]  you.
+[0.7s speech, 0.78s to transcribe]  Are you?
+[0.5s speech, 0.82s to transcribe]  Eric.
+[0.8s speech, 0.89s to transcribe]  How was your day?
+[0.4s speech, 0.79s to transcribe]  Why?
+[0.6s speech, 3.99s to transcribe]  y'all.
+[1.2s speech, 6.31s to transcribe]  We will see you next time.
+[0.5s speech, 0.86s to transcribe]  doesn't work.
+```
+
+**1.5s minimum silence:**
+
+```text
+[2.7s speech, 1.23s to transcribe]  And I think... No, no, I don't think I'll talk about it either.
+[2.6s speech, 1.10s to transcribe]  I think I should know maybe it's September 28th something like that
+[2.7s speech, 1.18s to transcribe]  That's true, we're looking at I think it's a number of times
+[4.4s speech, 1.07s to transcribe]  very cool. What if I don't think that?
+[1.3s speech, 0.83s to transcribe]  the air.
+[0.6s speech, 0.88s to transcribe]  hungry.
+[3.9s speech, 1.01s to transcribe]  very very hungry I need to eat food
+[0.5s speech, 0.82s to transcribe]  No.
+```
 
 ### The complete loop
 
