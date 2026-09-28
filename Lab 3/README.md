@@ -222,7 +222,7 @@ We also noticed that the beginning of our speech was often missing at both short
 
 Our device hears small everyday complaints and gives humorous verdicts. The storyboard shows a student complaining about a roommate returning an almost-empty milk carton to the fridge. Read the panels from left to right across the top row, then the bottom row.
 
-![Storyboard](tiny-court-storyboard.jpg)
+![Storyboard](storyboard.jpg)
 
 ### Design process
 
@@ -243,10 +243,13 @@ Our listening pauses are informed by Part C, where short silence thresholds ofte
 
 ## E. Acting out the dialogue
 
+[Our role-play movie here.](role-play.mp4)
+
 Find a partner, and *without sharing the script with your partner* try out the dialogue you've designed, where you (as the device designer) act as the device you are designing. Please record this interaction (for example, using Zoom's record feature).
 
 \*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
 
+When acting as the device, I sometimes waited a little longer than the planned 1.5 seconds after my partner finished speaking. This made the conversation feel a little more awkward than I had imagined because the gaps between turns were too long. I think an accurately timed 1.5-second silence threshold would feel more natural, although we still need to test it on the actual device, where speech processing could add further delay.
 
 ---
 
