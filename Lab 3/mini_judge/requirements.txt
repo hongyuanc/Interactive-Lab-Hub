@@ -1,0 +1,5 @@
+# Install inside the Lab 3 environment on the Raspberry Pi.
+-r ../requirements.txt
+adafruit-blinka
+adafruit-circuitpython-rgb-display
+Pillow
