@@ -1,14 +1,12 @@
-# Chatterboxes: Tiny Court of Everyday Disputes
+# Chatterboxes
 
-**Collaborators:** Hong Yuan Cao (hc2343), Yun-Chung Liu (yl4445)
-
-A speech-enabled Raspberry Pi judge for small everyday disputes. Part 1 explores voice and turn-taking; Part 2 implements the Mini Judge with a screen, a start button, and a wizard controller.
+**Collaborators:** Hong Yuan Cao hc2343, Yun-Chung Liu yl4445
 
 # Part 1
 
 ## A. Text to Speech
 
-Our greeting script: [greet_my_name.sh](speech-scripts/greet_my_name.sh).
+Greeting script: [greet_my_name.sh](speech-scripts/greet_my_name.sh).
 
 I used the same Piper voice as the demo for my greeting script: both sounded natural and conversational. However, compared with Piper, eSpeak and Festival sounded much more robotic. Even with the same words, the Piper greeting felt more like a person checking in with me, while the other two felt more like a machine delivering a message.
 
@@ -16,14 +14,9 @@ I used the same Piper voice as the demo for my greeting script: both sounded nat
 
 For my five-second recording, base.en took 0.72 seconds to load and 1.96 seconds to transcribe, with a real-time factor of 0.39x. small.en took 197.03 seconds to load and 5.66 seconds to transcribe, with a real-time factor of 1.13x. Both produced the same words, with only a punctuation difference. The small model’s startup wait was especially noticeable. Although loading happens only once in a continuously running system, its transcription was also slower without improving accuracy on this recording. I would easily choose base.en for faster startup and conversational responses.
 
-
 My script uses Piper to ask “How many coffees did you drink today?” and then records a five-second response. Testing with base.en produced the transcript “1,” taking 1.66 seconds with a real-time factor of 0.33x.
 
-Numerical-input script: [ask_number.sh](speech-scripts/ask_number.sh). Transcription was run separately with [transcribe.py](speech-scripts/transcribe.py).
-
-## C. Turn-taking
-
-We used [listen.py](speech-scripts/listen.py) to compare silence thresholds.
+## C. Turn-taking: knowing when someone has stopped talking
 
 ### Our observations
 
@@ -76,7 +69,7 @@ We also noticed that the beginning of our speech was often missing at both short
 
 Our device hears small everyday complaints and gives humorous verdicts. The storyboard shows a student complaining about a roommate returning an almost-empty milk carton to the fridge. Read the panels from left to right across the top row, then the bottom row.
 
-![Storyboard](storyboard.jpg)
+<img src="storyboard.jpg" alt="Six-panel hand-drawn storyboard of the Tiny Court: a student complains that a roommate left one drop of milk, the device asks how much is left, confirms its understanding, asks what would make it right, displays Thinking, and delivers the verdict" width="960">
 
 ### Design process
 
@@ -97,143 +90,71 @@ Our listening pauses are informed by Part C, where short silence thresholds ofte
 
 ## E. Acting out the dialogue
 
-[Watch our role-play recording](role-play.mp4).
+**[▶ Watch our Tiny Court role-play](https://github.com/eliu1122/Interactive-Lab-Hub/blob/Fall2026/Lab%203/Video%20of%20Raspberry%20Judge.mp4)**
 
-When acting as the device, I sometimes waited a little longer than the planned 1.5 seconds after my partner finished speaking. This made the conversation feel a little more awkward than I had imagined because the gaps between turns were too long. I think an accurately timed 1.5-second silence threshold would feel more natural, although we still need to test it on the actual device, where speech processing could add further delay.
+Acting it out was messier than the storyboard made it look. On paper every answer is one clean line, but out loud our partner gave longer answers with pauses in the middle of them, and the confirmation step was the clearest problem: instead of just saying "yes" they started explaining, so the 0.8 second threshold we had planned would have cut them off. The three second thinking pause also felt much longer spoken than it looked in the panel, and it only worked once we said "Thinking" out loud, otherwise it just seemed like the device had frozen. The verdict, on the other hand, landed better than we expected, because saying it in a formal judge voice got a real laugh that the drawing could not show.
 
+---
 
-# Part 2: Mini Judge
+# Lab 3 Part 2
 
-### Our redesign: the Mini Judge
+## Redesign
 
-**1. What we improved**
+**1. What could be improved?**
 
-- **Wording.** Our Part 1 questions were clipped. "How much left?" and "Almost empty, but put back?" only make sense if you already know the milk story. Every question now names what it is asking about, like "Did your roommate ask before taking the charger?", so a stranger can follow it.
-- **Timing.** In Part 1 we planned 0.8 seconds of silence to end a yes or no answer. The implemented script increases this to allow more room for an explanation. Yes or no questions now wait 1.2 seconds, and open questions keep 1.5 seconds. The 3 second deliberation stays as a deliberate suspense effect, but the screen now says THINKING so it does not look like the device froze.
-- **Misunderstandings.** The wizard has recovery lines one click away, like "Could you say that again?" and "The court did not catch that. Please answer yes or no." The confirmation step also repeats the complaint back before any verdict, so a wizard can ask follow-up questions when something was misheard. In autonomous mode, confirmation is a scored yes/no answer rather than a rewrite of the complaint.
-- **Scope.** Part 1 had one scripted milk case with a fixed ending. The judge now hears three kinds of dispute (a borrowed charger, eaten food, and uneven chores), and each has three possible verdicts (unfair, fair, or split), so the ruling depends on what the participant actually says.
+- **Wording:** Questions now say exactly what they mean, like "Did your roommate ask before taking the charger?" instead of "How much left?"
+- **Timing:** The judge waits a little longer (1.2 seconds) before deciding a yes or no answer is finished, so people are not cut off.
+- **Misunderstandings:** If the judge hears nothing, it asks you to say it again. If it cannot tell whether you said yes or no, it asks again.
 
-**2. Beyond speech: how you know whose turn it is**
+**2. How do people know when it is listening or thinking?**
 
-The Mini PiTFT is the turn signal. Every state has its own color and title, so you can tell at a glance whether it is your turn to talk:
+The screen changes color and shows a word:
 
-| Screen | Color | Meaning |
-|---|---|---|
-| MINI JUDGE | navy | waiting for someone to press the button |
-| THE JUDGE | amber | the judge is talking, and its words are shown |
-| LISTENING | green | your turn; pause when you are done |
-| THINKING... | purple | the judge is working on your answer |
-| UNFAIR / FAIR / SPLIT | red / blue / gray | the verdict |
+- **Amber, "THE JUDGE":** the judge is talking.
+- **Green, "LISTENING":** your turn to talk.
+- **Purple, "THINKING...":** the judge is working on your answer.
 
-The verdict colors never reuse a turn color, so a FAIR verdict is not mistaken for LISTENING. We used the whole screen rather than a single LED because labels alongside colors help distinguish the states, and showing the judge's words helps when the speaker is hard to hear.
+We used the screen instead of the LED because a word is clearer than a light.
 
-The **top button** replaces a wake word. Pressing it opens court, so nobody has to guess what to say to wake the judge up. A press only counts between cases: one in the middle of a case is ignored, so it cannot start a second case by accident.
+**3. New script**
 
-**3. New diagram and script**
+How a case goes:
 
-```mermaid
-stateDiagram-v2
-    direction LR
-    [*] --> Idle
-    Idle --> Speaking: someone presses the top button
-    Speaking --> Listening: judge asks a question
-    Listening --> Thinking: participant pauses 1.2 to 1.5 s
-    Thinking --> Speaking: next question, chosen by the judge or a wizard
-    Speaking --> Thinking: deliberation, 3 s
-    Speaking --> Verdict: the judge or a wizard rules
-    Verdict --> Idle: court is adjourned
-```
+1. Press the top button to start.
+2. The judge asks for your complaint.
+3. It asks a few questions about what happened.
+4. It thinks for 3 seconds.
+5. It gives a verdict: fair, unfair, or split.
 
-Every line the judge can say is in [cases.py](mini_judge/cases.py). Each case follows the six steps from our Part 1 storyboard: complaint, evidence, confirmation, remedy, deliberation, and verdict.
-
-| Case | Evidence the judge asks for | Verdicts |
-|---|---|---|
-| Borrowed charger | Did they ask first? How long did they keep it? Did your phone die? Has it happened before? | unfair, fair, split |
-| Eaten food | Was it labeled? How much did they eat? Did they offer to replace it? Is this the first time? | unfair, fair, split |
-| Uneven chores | Did you agree who does what? How long has it gone on? Have you reminded them? Who has been doing the work? | unfair, fair, split |
+The judge handles three kinds of complaint: a borrowed charger, eaten food, and chores. The full script is in [cases.py](mini_judge/cases.py).
 
 **4. Input devices**
 
-We use the Mini PiTFT's top button: one press opens court. Unlike a proximity sensor, a button cannot be set off by someone just walking past, and pressing it makes starting a case a deliberate choice.
+The top button on the screen starts a case, and a USB microphone hears your answers.
 
 ## Prototype
 
-### How the Mini Judge works
+### How it works
 
-Everything the participant sees and hears comes from the Pi. It runs in two modes:
+Press the top button and the judge asks questions out loud. It listens until you pause, turns your answer into text, and moves on. It works out the type of complaint from the words you use, and decides the verdict from your yes and no answers.
 
-- **On its own (the default).** Press the top button and the judge runs a whole case by itself. It picks the case from the words in your complaint, asks that case's questions in order, and rules from your yes or no answers.
-- **Wizard of Oz (`--wizard`).** A hidden wizard decides what the judge says next from a controller on a laptop. This is the mode for user testing.
+It runs entirely on the Pi, using the mini screen and its button, a USB microphone, and a USB speaker. The code is in [mini_judge/](mini_judge/).
 
-On the Pi, [mini_judge.py](mini_judge/mini_judge.py):
+### Screen captures and video
 
-1. watches the top button and opens court when someone presses it
-2. speaks the judge's lines with Piper (`en_US-lessac-medium`)
-3. listens with Silero VAD, which decides when the participant's turn is over
-4. transcribes what they said with faster-whisper (`tiny.en`)
-5. shows whose turn it is on the Mini PiTFT
-6. serves the controller page over the network: the wizard's buttons in wizard mode, and a live transcript in the default mode
+<img src="mini_judge/screens.png" alt="The Mini Judge's screens: waiting in navy, judge talking in amber, listening in green, thinking in purple, and the unfair, fair and split verdicts in red, blue and gray" width="960">
 
-### How the judge decides on its own
+<img src="mini_judge/controller.png" alt="The wizard controller: buttons for each question, verdict buttons, and a transcript of what was said" width="960">
 
-[autopilot.py](mini_judge/autopilot.py) does three things:
+The wizard controller image above shows the question buttons, verdict controls, and transcript area.
 
-1. **Picks the case** from keywords in the complaint. "Charger", "phone" or "battery" mean the charger case; "ate", "snack" or "fridge" mean food; "dishes", "trash" or "rent" mean chores. If it cannot tell, it asks "Is this about a charger, food, or chores?"
-2. **Reads each yes or no answer.** The first yes or no word wins, so "Yes, they didn't ask" counts as a yes. If an answer is neither, it asks for a yes or a no.
-3. **Adds up a score.** Every answer that points to the roommate being unfair adds a point, and every answer that points the other way takes one away. 2 or more is UNFAIR, -1 or less is FAIR, and anything in between is SPLIT.
+Video of the Mini Judge in use: https://drive.google.com/file/d/1RMILTvas-BQMBVSTVRinUnw2pYWzzAzT/view?usp=sharing
 
-| Case | Answers that point to unfair |
-|---|---|
-| Borrowed charger | they did **not** ask first; your phone **did** die; it **has** happened before; you confirm the complaint |
-| Eaten food | the food **was** labeled; they did **not** offer to replace it; it is **not** the first time; you confirm the complaint |
-| Uneven chores | you **did** agree who does what; you **have** reminded them; you confirm the complaint |
-
-Open questions like "How long did they keep it?" are asked and recorded, but they do not change the verdict.
-
-**Hardware:** Raspberry Pi 5, Mini PiTFT (screen and top button), USB microphone, and USB speaker.
-
-| File | What it does |
-|---|---|
-| [mini_judge/mini_judge.py](mini_judge/mini_judge.py) | runs the screen, button, microphone, speaker, and controller |
-| [mini_judge/cases.py](mini_judge/cases.py) | every line the judge can say, for all three cases |
-| [mini_judge/autopilot.py](mini_judge/autopilot.py) | how the judge picks a case and a verdict on its own |
-| [mini_judge/templates/controller.html](mini_judge/templates/controller.html) | the controller page: the wizard's buttons, and a live transcript |
-
-### Running it
-
-```
-cd ~/Interactive-Lab-Hub/"Lab 3"
-source .venv/bin/activate
-pip install -r mini_judge/requirements.txt
-cd mini_judge
-python mini_judge.py --wizard
-```
-
-For Wizard of Oz testing, open the address printed by the command on a laptop on the same network. Press the top button to begin, then use the controller to choose the next question and verdict. To try the autonomous mode, restart with `python mini_judge.py`. If the Lab 2 `piscreen.service` is running and using the display, stop it first with `sudo systemctl stop piscreen.service`. The Mini PiTFT and SPI must already be configured as in Lab 2; the speech models must be installed with `speech-scripts/setup.sh`.
-
-- **Two microphones plugged in?** List them with `python -c "import sounddevice; print(sounddevice.query_devices())"`, then pick one with `python mini_judge.py --mic 4`.
-
-### Participant screen designs
-
-<img src="mini_judge/screens.png" alt="The seven Mini PiTFT screens: idle in navy, judge speaking in amber, listening in green, thinking in purple, and the unfair, fair and split verdicts in red, blue and gray" width="960">
-
-### Wizard controller reference
-
-<img src="mini_judge/controller.png" alt="The wizard's controller page: opening and recovery lines, tabs for the three cases with their evidence, confirmation and remedy questions, verdict buttons, a free text box, a stop listening button, and a live transcript" width="960">
-
-In wizard mode, the controller has the opening and recovery lines at the top, a tab for each case, and the three verdict buttons for that case. On the right, "What was said" shows the live transcript. Buttons grey out while the judge is speaking or listening, so the wizard cannot talk over the participant. "Stop listening" ends a turn early, and "Say anything" covers whatever the script did not predict. In autonomous mode, use this page for monitoring. The current template still shows controls, although the busy state blocks new questions while a case is running.
-
-### Demo video and controller
-
-[Watch the Mini Judge demo on Google Drive](https://drive.google.com/file/d/1RMILTvas-BQMBVSTVRinUnw2pYWzzAzT/view?usp=sharing)
-
-The [wizard controller image](mini_judge/controller.png) above shows the question buttons, verdict controls, and transcript area.
-
-> **AI Disclaimer:** The Mini Judge code (`mini_judge.py`, `cases.py`, `autopilot.py`, and `templates/controller.html`) was partially written with help from AI (Claude Code). AI also helped draft this Part 2 write-up. The Mini Judge concept, the storyboard, and the charger case are ours.
+> **AI Disclaimer:** The Mini Judge code (`mini_judge.py`, `cases.py`, `autopilot.py`, and `templates/controller.html`) was partially written with help from AI (Claude Code). AI also helped format this Part 2 write-up into appropriate mark-down.
 
 ## Test the system
 
-We tested the implemented Mini Judge with our peers Tony (yw2946) and Yuge (yx692). The following reflections summarize their feedback and our experience operating the wizard controller. These trials were separate from the Part 1 role-play linked above.
+We tested the implemented Mini Judge with our peers Tony (yw2946) and Yuge (yx692).
 
 ### What worked well about the system and what didn't?
 
