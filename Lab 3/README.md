@@ -1,167 +1,29 @@
-# Chatterboxes
+# Chatterboxes: Tiny Court of Everyday Disputes
 
-**NAMES OF COLLABORATORS HERE**
+**Collaborators:** Hong Yuan Cao (hc2343), Yun-Chung Liu (yl4445)
 
-Hong Yuan Cao hc2343, Yun-Chung Liu yl4445
-
-[![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://www.youtube.com/embed/Q8FWzLMobx0?start=19)
-
-In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
-
-We will focus on **audio** as the main modality for interaction to start; these general techniques can be extended to **video**, **haptics** or other interactive mechanisms in the second part of the Lab.
-
-A note on what you are building with. Speech interfaces are usually taught as two boxes — speech-in, speech-out — and that framing hides the part that actually determines whether an interaction works. Between listening and speaking sits the question of **whose turn it is**: when does the device decide you have finished talking, and how long does it make you wait before it answers? This lab gives you direct control over both, and we will ask you to notice what changes when you move them.
-
-## Prep for Part 1: Get the Latest Content and Pick up Additional Parts
-
-Please check instructions in [prep.md](prep.md) and complete the setup.
-
-### Pick up Web Camera If You Don't Have One
-
-Students who have not already received a web camera will receive their Webcam and at the beginning of lab. If you cannot make it to class this week, please contact the TAs to ensure you get these.
-
-### Get the Latest Content
-
-As always, pull updates from the class Interactive-Lab-Hub to both your Pi and your own GitHub repo.
-
-**\[recommended\]** Option 1: On the Pi, `cd` to your `Interactive-Lab-Hub`, pull the updates from upstream (class lab-hub) and push the updates back to your own GitHub repo. You will need the *personal access token* for this.
-
-```
-pi@ixe00:~$ cd Interactive-Lab-Hub
-pi@ixe00:~/Interactive-Lab-Hub $ git pull upstream Fall2026
-pi@ixe00:~/Interactive-Lab-Hub $ git add .
-pi@ixe00:~/Interactive-Lab-Hub $ git commit -m "get lab3 updates"
-pi@ixe00:~/Interactive-Lab-Hub $ git push
-```
-
-Option 2: On your own GitHub repo, create a pull request to get updates from the class Interactive-Lab-Hub. After you have the latest updates online, go to your Pi, `cd` to your `Interactive-Lab-Hub` and use `git pull`.
-
----
+A speech-enabled Raspberry Pi judge for small everyday disputes. Part 1 explores voice and turn-taking; Part 2 implements the Mini Judge with a screen, a start button, and a wizard controller.
 
 # Part 1
 
-## Setup
-
-Create and activate a virtual environment for this lab:
-
-```
-pi@ixe00:~$ cd Interactive-Lab-Hub/Lab\ 3
-pi@ixe00:~/Interactive-Lab-Hub/Lab 3 $ python3 -m venv .venv
-pi@ixe00:~/Interactive-Lab-Hub/Lab 3 $ source .venv/bin/activate
-(.venv) pi@ixe00:~/Interactive-Lab-Hub/Lab 3 $
-```
-
-Install the Python dependencies:
-
-```
-(.venv) $ pip install -r requirements.txt
-```
-
-This takes a few minutes. If you would like it to take considerably less time, [`uv`](https://docs.astral.sh/uv/) is a drop-in replacement for `pip` that is dramatically faster on the Pi:
-
-```
-(.venv) $ pip install uv && uv pip install -r requirements.txt
-```
-
-Then run the setup script, which installs the classic speech synthesizers, downloads the voice activity detection model, and pre-fetches a neural voice and a speech recognition model so you are not waiting on downloads during lab:
-
-```
-(.venv):~$ cd speech-scripts
-(.venv) $ ./setup.sh
-```
-
-Check your audio devices before going further. `arecord -l` lists capture devices and `aplay -l` lists playback devices; if your webcam microphone or Bluetooth speaker does not appear, fix that first — every script below assumes the system defaults are the ones you want.
-
 ## A. Text to Speech
 
-Your Pi can speak in several quite different ways, and the differences are audible in a way that matters for design. In `speech-scripts/` there are shell scripts for each.
-
-### The classic engines
-
-```
-(.venv) $ cd speech-scripts
-
-(.venv) $ sudo apt update
-(.venv) $ sudo apt install -y espeak festival festvox-kallpc16k
-
-(.venv) $ ./espeak_demo.sh
-(.venv) $ ./festival_demo.sh
-```
-
-You can run these `.sh` files by typing `./filename`, and read one with `cat filename`. You can also play audio files directly with `aplay filename` — try `aplay lookdave.wav`.
-
-These are all decades-old technology and they sound like it. `espeak-ng` is a *formant synthesizer*: it generates speech from an acoustic model of the vocal tract, which is why it sounds robotic but also why the whole thing fits in a couple of megabytes and responds instantly. `festival` is *concatenative*: they stitch together recorded fragments of a real speaker, which sounds more human but breaks audibly at the seams.
-
-### Neural TTS with Piper
-
-Note that the Piper command line changed in version 1.x — voices are now downloaded explicitly with `python3 -m piper.download_voices`, and you invoke it as `python3 -m piper`. Tutorials you find online may show the old `echo ... | piper --model ...` form, which no longer works. Browse the [voice samples](https://rhasspy.github.io/piper-samples) and download a different one if you'd like:
-
-```
-(.venv) $ python3 -m piper.download_voices en_US-lessac-medium
-```
-
-[Piper](https://github.com/OHF-Voice/piper1-gpl) synthesizes speech with a small neural network, runs comfortably on the Pi 5, and sounds markedly better than the above.
-
-```
-(.venv) $ ./piper_demo.sh
-```
-
-The demo script also shows `--output-raw`, which streams audio to the speaker as it is generated rather than writing a file first. Listen for the difference in how quickly speech begins. In a conversational system this gap is the thing your user experiences as responsiveness.
-
-\*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
-(This shell file should be saved to your own repo for this lab.)
-
-File called: greet_my_name.sh
-
-\*\***Then answer: Is the same greeting, in these different voices, the same greeting? Describe one concrete way the voice changed what the utterance seemed to mean or who seemed to be speaking.**\*\*
+Our greeting script: [greet_my_name.sh](speech-scripts/greet_my_name.sh).
 
 I used the same Piper voice as the demo for my greeting script: both sounded natural and conversational. However, compared with Piper, eSpeak and Festival sounded much more robotic. Even with the same words, the Piper greeting felt more like a person checking in with me, while the other two felt more like a machine delivering a message.
 
 ## B. Speech to Text
 
-We use [faster-whisper](https://github.com/SYSTRAN/faster-whisper), a reimplementation of OpenAI's Whisper model that runs several times faster on CPU and does not require PyTorch. All processing happens on the Pi; nothing is sent to a server.
-
-```
-(.venv) $ python transcribe.py lookdave.wav
-```
-
-The transcript is not the interesting output here — the timings are. Run it again with a larger model and compare:
-
-```
-(.venv) $ python transcribe.py lookdave.wav --model base.en
-(.venv) $ python transcribe.py lookdave.wav --model small.en
-#  noted that the first run may take longer because the model is downloaded, and that the HF unauthenticated-request warning is expected and not an error.
-```
-
-Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. The `.en` variants are English-only and faster than their multilingual counterparts at the same size.
-
-\*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
-
 For my five-second recording, base.en took 0.72 seconds to load and 1.96 seconds to transcribe, with a real-time factor of 0.39x. small.en took 197.03 seconds to load and 5.66 seconds to transcribe, with a real-time factor of 1.13x. Both produced the same words, with only a punctuation difference. The small model’s startup wait was especially noticeable. Although loading happens only once in a continuously running system, its transcription was also slower without improving accuracy on this recording. I would easily choose base.en for faster startup and conversational responses.
 
-\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.
 
 My script uses Piper to ask “How many coffees did you drink today?” and then records a five-second response. Testing with base.en produced the transcript “1,” taking 1.66 seconds with a real-time factor of 0.33x.
 
-## C. Turn-taking: knowing when someone has stopped talking
+Numerical-input script: [ask_number.sh](speech-scripts/ask_number.sh). Transcription was run separately with [transcribe.py](speech-scripts/transcribe.py).
 
-Everything so far has worked on fixed audio files. A real conversational device does not get told when to start and stop recording — it has to decide. This is the problem that makes speech interfaces hard, and it is mostly not a speech recognition problem.
+## C. Turn-taking
 
-We use a **voice activity detector** (VAD) to segment the microphone stream into utterances. `listen.py` runs Silero VAD continuously and hands each detected utterance to faster-whisper:
-
-```
-(.venv) $ cd speech-scripts
-(.venv) $ python listen.py
-```
-
-Speak, pause, and watch it transcribe. Now change the endpointing threshold — the amount of silence the system requires before it decides your turn is over:
-
-```
-(.venv) $ python listen.py --min-silence 0.2
-(.venv) $ python listen.py --min-silence 1.5
-```
-
-\*\***Try both extremes, and something in between. Describe what each one feels like to talk to. Note specifically: at 0.2s, what kinds of normal speech get cut off? At 1.5s, what does the delay make the system seem like?**\*\*
+We used [listen.py](speech-scripts/listen.py) to compare silence thresholds.
 
 ### Our observations
 
@@ -208,14 +70,6 @@ We also noticed that the beginning of our speech was often missing at both short
 [0.5s speech, 0.82s to transcribe]  No.
 ```
 
-### The complete loop
-
-`echo_bot.py` puts the pieces together: it listens, endpoints, transcribes, and speaks a reply through Piper. The dialogue policy is deliberately trivial — it repeats what you said — so that everything you notice is a property of the timing rather than the content.
-
-```
-(.venv) $ python echo_bot.py
-```
-
 ## D. Storyboard
 
 ### Tiny Court of Everyday Disputes
@@ -243,62 +97,168 @@ Our listening pauses are informed by Part C, where short silence thresholds ofte
 
 ## E. Acting out the dialogue
 
-[Our role-play movie here.](role-play.mp4)
-
-Find a partner, and *without sharing the script with your partner* try out the dialogue you've designed, where you (as the device designer) act as the device you are designing. Please record this interaction (for example, using Zoom's record feature).
-
-\*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
+[Watch our role-play recording](role-play.mp4).
 
 When acting as the device, I sometimes waited a little longer than the planned 1.5 seconds after my partner finished speaking. This made the conversation feel a little more awkward than I had imagined because the gaps between turns were too long. I think an accurately timed 1.5-second silence threshold would feel more natural, although we still need to test it on the actual device, where speech processing could add further delay.
 
----
 
-# Lab 3 Part 2
+# Part 2: Mini Judge
 
-For Part 2, you will redesign the interaction with the speech-enabled device using the data collected, as well as feedback from part 1.
+### Our redesign: the Mini Judge
 
-## Prep for Part 2
+**1. What we improved**
 
-1. What are concrete things that could use improvement in the design of your device? For example: wording, timing, anticipation of misunderstandings.
-2. What are other modes of interaction *beyond speech* that you might also use to clarify how to interact? In particular: how does someone know when the device is listening, and when it is thinking? You have a screen and an LED.
-3. Make a new storyboard, diagram and/or script based on these reflections.
-4. (optional) Integrate [input devices](inputs.md) in the system
+- **Wording.** Our Part 1 questions were clipped. "How much left?" and "Almost empty, but put back?" only make sense if you already know the milk story. Every question now names what it is asking about, like "Did your roommate ask before taking the charger?", so a stranger can follow it.
+- **Timing.** In Part 1 we planned 0.8 seconds of silence to end a yes or no answer. The implemented script increases this to allow more room for an explanation. Yes or no questions now wait 1.2 seconds, and open questions keep 1.5 seconds. The 3 second deliberation stays as a deliberate suspense effect, but the screen now says THINKING so it does not look like the device froze.
+- **Misunderstandings.** The wizard has recovery lines one click away, like "Could you say that again?" and "The court did not catch that. Please answer yes or no." The confirmation step also repeats the complaint back before any verdict, so a wizard can ask follow-up questions when something was misheard. In autonomous mode, confirmation is a scored yes/no answer rather than a rewrite of the complaint.
+- **Scope.** Part 1 had one scripted milk case with a fixed ending. The judge now hears three kinds of dispute (a borrowed charger, eaten food, and uneven chores), and each has three possible verdicts (unfair, fair, or split), so the ruling depends on what the participant actually says.
 
-## Prototype your system
+**2. Beyond speech: how you know whose turn it is**
 
-The system should:
-* use the Raspberry Pi
-* use one or more sensors
-* require participants to speak to it
+The Mini PiTFT is the turn signal. Every state has its own color and title, so you can tell at a glance whether it is your turn to talk:
 
-*Document how the system works.*
+| Screen | Color | Meaning |
+|---|---|---|
+| MINI JUDGE | navy | waiting for someone to press the button |
+| THE JUDGE | amber | the judge is talking, and its words are shown |
+| LISTENING | green | your turn; pause when you are done |
+| THINKING... | purple | the judge is working on your answer |
+| UNFAIR / FAIR / SPLIT | red / blue / gray | the verdict |
 
-*Include videos or screencaptures of both the system and the controller.*
+The verdict colors never reuse a turn color, so a FAIR verdict is not mistaken for LISTENING. We used the whole screen rather than a single LED because labels alongside colors help distinguish the states, and showing the judge's words helps when the speaker is hard to hear.
+
+The **top button** replaces a wake word. Pressing it opens court, so nobody has to guess what to say to wake the judge up. A press only counts between cases: one in the middle of a case is ignored, so it cannot start a second case by accident.
+
+**3. New diagram and script**
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Idle
+    Idle --> Speaking: someone presses the top button
+    Speaking --> Listening: judge asks a question
+    Listening --> Thinking: participant pauses 1.2 to 1.5 s
+    Thinking --> Speaking: next question, chosen by the judge or a wizard
+    Speaking --> Thinking: deliberation, 3 s
+    Speaking --> Verdict: the judge or a wizard rules
+    Verdict --> Idle: court is adjourned
+```
+
+Every line the judge can say is in [cases.py](mini_judge/cases.py). Each case follows the six steps from our Part 1 storyboard: complaint, evidence, confirmation, remedy, deliberation, and verdict.
+
+| Case | Evidence the judge asks for | Verdicts |
+|---|---|---|
+| Borrowed charger | Did they ask first? How long did they keep it? Did your phone die? Has it happened before? | unfair, fair, split |
+| Eaten food | Was it labeled? How much did they eat? Did they offer to replace it? Is this the first time? | unfair, fair, split |
+| Uneven chores | Did you agree who does what? How long has it gone on? Have you reminded them? Who has been doing the work? | unfair, fair, split |
+
+**4. Input devices**
+
+We use the Mini PiTFT's top button: one press opens court. Unlike a proximity sensor, a button cannot be set off by someone just walking past, and pressing it makes starting a case a deliberate choice.
+
+## Prototype
+
+### How the Mini Judge works
+
+Everything the participant sees and hears comes from the Pi. It runs in two modes:
+
+- **On its own (the default).** Press the top button and the judge runs a whole case by itself. It picks the case from the words in your complaint, asks that case's questions in order, and rules from your yes or no answers.
+- **Wizard of Oz (`--wizard`).** A hidden wizard decides what the judge says next from a controller on a laptop. This is the mode for user testing.
+
+On the Pi, [mini_judge.py](mini_judge/mini_judge.py):
+
+1. watches the top button and opens court when someone presses it
+2. speaks the judge's lines with Piper (`en_US-lessac-medium`)
+3. listens with Silero VAD, which decides when the participant's turn is over
+4. transcribes what they said with faster-whisper (`tiny.en`)
+5. shows whose turn it is on the Mini PiTFT
+6. serves the controller page over the network: the wizard's buttons in wizard mode, and a live transcript in the default mode
+
+### How the judge decides on its own
+
+[autopilot.py](mini_judge/autopilot.py) does three things:
+
+1. **Picks the case** from keywords in the complaint. "Charger", "phone" or "battery" mean the charger case; "ate", "snack" or "fridge" mean food; "dishes", "trash" or "rent" mean chores. If it cannot tell, it asks "Is this about a charger, food, or chores?"
+2. **Reads each yes or no answer.** The first yes or no word wins, so "Yes, they didn't ask" counts as a yes. If an answer is neither, it asks for a yes or a no.
+3. **Adds up a score.** Every answer that points to the roommate being unfair adds a point, and every answer that points the other way takes one away. 2 or more is UNFAIR, -1 or less is FAIR, and anything in between is SPLIT.
+
+| Case | Answers that point to unfair |
+|---|---|
+| Borrowed charger | they did **not** ask first; your phone **did** die; it **has** happened before; you confirm the complaint |
+| Eaten food | the food **was** labeled; they did **not** offer to replace it; it is **not** the first time; you confirm the complaint |
+| Uneven chores | you **did** agree who does what; you **have** reminded them; you confirm the complaint |
+
+Open questions like "How long did they keep it?" are asked and recorded, but they do not change the verdict.
+
+**Hardware:** Raspberry Pi 5, Mini PiTFT (screen and top button), USB microphone, and USB speaker.
+
+| File | What it does |
+|---|---|
+| [mini_judge/mini_judge.py](mini_judge/mini_judge.py) | runs the screen, button, microphone, speaker, and controller |
+| [mini_judge/cases.py](mini_judge/cases.py) | every line the judge can say, for all three cases |
+| [mini_judge/autopilot.py](mini_judge/autopilot.py) | how the judge picks a case and a verdict on its own |
+| [mini_judge/templates/controller.html](mini_judge/templates/controller.html) | the controller page: the wizard's buttons, and a live transcript |
+
+### Running it
+
+```
+cd ~/Interactive-Lab-Hub/"Lab 3"
+source .venv/bin/activate
+pip install -r mini_judge/requirements.txt
+cd mini_judge
+python mini_judge.py --wizard
+```
+
+For Wizard of Oz testing, open the address printed by the command on a laptop on the same network. Press the top button to begin, then use the controller to choose the next question and verdict. To try the autonomous mode, restart with `python mini_judge.py`. If the Lab 2 `piscreen.service` is running and using the display, stop it first with `sudo systemctl stop piscreen.service`. The Mini PiTFT and SPI must already be configured as in Lab 2; the speech models must be installed with `speech-scripts/setup.sh`.
+
+- **Two microphones plugged in?** List them with `python -c "import sounddevice; print(sounddevice.query_devices())"`, then pick one with `python mini_judge.py --mic 4`.
+
+### Participant screen designs
+
+<img src="mini_judge/screens.png" alt="The seven Mini PiTFT screens: idle in navy, judge speaking in amber, listening in green, thinking in purple, and the unfair, fair and split verdicts in red, blue and gray" width="960">
+
+### Wizard controller reference
+
+<img src="mini_judge/controller.png" alt="The wizard's controller page: opening and recovery lines, tabs for the three cases with their evidence, confirmation and remedy questions, verdict buttons, a free text box, a stop listening button, and a live transcript" width="960">
+
+In wizard mode, the controller has the opening and recovery lines at the top, a tab for each case, and the three verdict buttons for that case. On the right, "What was said" shows the live transcript. Buttons grey out while the judge is speaking or listening, so the wizard cannot talk over the participant. "Stop listening" ends a turn early, and "Say anything" covers whatever the script did not predict. In autonomous mode, use this page for monitoring. The current template still shows controls, although the busy state blocks new questions while a case is running.
+
+### Demo video and controller
+
+[Watch the Mini Judge demo on Google Drive](https://drive.google.com/file/d/1RMILTvas-BQMBVSTVRinUnw2pYWzzAzT/view?usp=sharing)
+
+The [wizard controller image](mini_judge/controller.png) above shows the question buttons, verdict controls, and transcript area.
+
+> **AI Disclaimer:** The Mini Judge code (`mini_judge.py`, `cases.py`, `autopilot.py`, and `templates/controller.html`) was partially written with help from AI (Claude Code). AI also helped draft this Part 2 write-up. The Mini Judge concept, the storyboard, and the charger case are ours.
 
 ## Test the system
 
-Try to get at least two people to interact with your system. (Ideally, you would inform them that there is a wizard *after* the interaction, but we recognize that can be hard.)
-
-Answer the following:
+We tested the implemented Mini Judge with our peers Tony (yw2946) and Yuge (yx692). The following reflections summarize their feedback and our experience operating the wizard controller. These trials were separate from the Part 1 role-play linked above.
 
 ### What worked well about the system and what didn't?
-\*\**your answer here*\*\*
+
+When the conversation stayed within the prepared script, the interaction felt like a smooth court experience. The screen states helped Tony and Yuge understand which phase they were in and what was happening. The visible distinction between speaking, listening, thinking, and delivering a verdict made the exchange easier to follow and gave the device a clear courtroom structure.
+
+The main limitation was how strongly the experience depended on the script. It did not work well when participants moved beyond the supported scenarios or expected a response that the prepared dialogue did not cover. We had to explain how the system worked and guide them toward the kinds of interaction it could handle. That extra guidance made the conversation feel less spontaneous: participants were adapting to the system's limitations instead of freely explaining their complaint. The smooth experience therefore depended partly on knowing how to stay within its boundaries.
 
 ### What worked well about the controller and what didn't?
-\*\**your answer here*\*\*
+
+From the wizard's side, the controller was intuitive. I could find the next line, click its button, and let the Pi speak and advance the interaction. Having the prepared questions and verdicts available as buttons made it straightforward to operate the judge while following the conversation.
+
+However, an easy-to-use controller did not remove the limits of the scripted dialogue. Finding the next line was simple when an answer matched the expected flow, but an unexpected answer could leave us without a suitable prepared response. Although the controller includes a free-text option, the tested experience still depended heavily on the available script. This suggests that the main improvement needed is more flexible dialogue, rather than simply adding more controls.
 
 ### What lessons can you take away from the WoZ interactions for designing a more autonomous version of the system?
-\*\**your answer here*\*\*
+
+The tests showed that clear turn-taking cues and flexible conversation are separate design problems. The screen successfully communicated the current phase, but participants still needed help understanding what the judge could discuss. We would keep the screen states and make the supported scope clear in the opening dialogue, so users do not need as much explanation from us before starting.
+
+A more autonomous version should recognize when an answer does not fit the expected question, ask a relevant clarification, and give users a way to correct the judge's understanding. It should also acknowledge unsupported complaints instead of trying to force them into a prepared case. The current autonomous mode uses keywords and the first recognized yes/no word, while open-ended answers are recorded without affecting the verdict. Using the substance of those answers, including the participant's requested remedy, would make the ruling feel more connected to their actual complaint.
+
+The goal would be to preserve the smooth, clearly signaled court experience while reducing how much participants have to follow our script. These are proposed improvements based on the trials, rather than capabilities the current prototype already has.
 
 ### How could you use your system to create a dataset of interaction? What other sensing modalities would make sense to capture?
-\*\**your answer here*\*\*
 
-<details>
-  <summary><strong>Submission Cleanup Reminder (Click to Expand)</strong></summary>
+The prototype already saves timestamped speaker/text entries in `log.jsonl` and participant utterances as WAV files. With participants' consent, we could annotate these with intended words, dispute category, recognition errors, interruptions, and the wizard's chosen response. Additional state-transition and timing logs would help separate endpointing delay from recognition and wizard response time. Synchronized video could capture facial expressions, gestures, and whether participants notice the screen cues; button-event logs could capture attempts to start or restart a case.
 
-  **Before submitting your README.md:**
-  - This readme.md file has a lot of extra text for guidance.
-  - Remove all instructional text and example prompts from this file.
-  - You may either delete these sections or use the toggle/hide feature in VS Code to collapse them for a cleaner look.
-  - Your final submission should be neat, focused on your own work, and easy to read for grading.
-</details>
+### Implementation limits
+
+The autonomous judge supports charger, food, and chores keywords only. Shared costs are routed to the chores case, but its questions and verdicts are still chore-oriented. Ambiguous/no-keyword complaints trigger one clarification before dismissal; incidental keywords can still misclassify unrelated complaints. Fixed verdicts can assume facts that were never established, so this remains a playful constrained prototype. In wizard mode, a person can adapt the dialogue using the free-text control.
