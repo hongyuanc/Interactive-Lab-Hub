@@ -93,6 +93,16 @@ The playful element is translating a familiar hand gesture into a small mechanic
 
 Our first iteration established the button-to-display-and-servo interaction. The second iteration adds a paper fly-swatter attachment and a tissue-box support beside a packet of fruit snacks. The raw recording shows button presses, the READY/SHOO screen feedback, and the attachment changing position. Mounting the servo above the tabletop gives the attachment space to move, while the joystick and screen remain accessible in front.
 
+#### User testing and feedback
+
+We tested Fly Shoo with **Jovian (jlw457)**, a peer from our class. He found the interaction intuitive and easy to use, particularly because a single button press runs the entire sweep sequence without requiring the user to hold the button or control each movement.
+
+His main suggestion was to make the controller remote. The current wires limit where the joystick can be placed relative to the device, making the physical arrangement less flexible. A remote controller would let the user keep the button within reach while placing the swatter closer to the food.
+
+This feedback suggests that the simple trigger is worth keeping, while the placement of the controller needs more attention. We initially focused on making the button, screen, and servo work together; the test highlighted that an understandable interaction can still be inconvenient if its controls cannot be positioned comfortably.
+
+For a future iteration, we would explore a wireless button while preserving the same one-press sweep and READY/SHOO feedback. We would then test whether a user can activate the device comfortably from their seat and still tell when the sweep has finished. Remote control is a proposed improvement, not part of the current prototype.
+
 ### Part F
 #### Prototype documentation
 
