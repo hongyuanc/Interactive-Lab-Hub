@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="640" fill="#ffffff"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#667"/>
+    </marker>
+  </defs>
+  <text x="500" y="32" text-anchor="middle" font-size="22" font-weight="bold" fill="#222">Desk Curfew: Verplank diagram</text>
+
+  <!-- ERROR and IDEA -->
+  <rect x="40" y="56" width="420" height="92" rx="8" fill="#fde8e6" stroke="#c0392b"/>
+  <text x="56" y="80" font-size="14" font-weight="bold" fill="#c0392b">ERROR · what goes wrong today</text>
+  <text x="56" y="104" font-size="13" fill="#222">"I'll be in bed by 12:30," then one more thing</text>
+  <text x="56" y="122" font-size="13" fill="#222">at the desk until 2. In the morning I never</text>
+  <text x="56" y="140" font-size="13" fill="#222">know how late it really got.</text>
+
+  <rect x="540" y="56" width="420" height="92" rx="8" fill="#eef6ea" stroke="#3c8d40"/>
+  <text x="556" y="80" font-size="14" font-weight="bold" fill="#3c8d40">IDEA</text>
+  <text x="556" y="104" font-size="13" fill="#222">A desk you hand a bedtime promise to, which</text>
+  <text x="556" y="122" font-size="13" fill="#222">watches the empty chair overnight and tells you</text>
+  <text x="556" y="140" font-size="13" fill="#222">honestly in the morning whether you kept it.</text>
+  <line x1="460" y1="102" x2="536" y2="102" stroke="#667" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- column headings -->
+  <text x="250" y="186" text-anchor="middle" font-size="15" font-weight="bold" fill="#445">HOW IT WORKS (knowing)</text>
+  <text x="750" y="186" text-anchor="middle" font-size="15" font-weight="bold" fill="#445">HOW YOU USE IT (doing)</text>
+  <line x1="500" y1="170" x2="500" y2="620" stroke="#ccd" stroke-dasharray="4 4"/>
+
+  <!-- METAPHOR / SCENARIO -->
+  <rect x="40" y="200" width="420" height="120" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="56" y="224" font-size="14" font-weight="bold" fill="#334">METAPHOR</text>
+  <text x="56" y="248" font-size="13" fill="#222">A witness you make a promise to, and a traffic</text>
+  <text x="56" y="266" font-size="13" fill="#222">light in the morning: the answer is a color you</text>
+  <text x="56" y="284" font-size="13" fill="#222">can read from bed, with a dark screen all night.</text>
+
+  <rect x="540" y="200" width="420" height="120" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="556" y="224" font-size="14" font-weight="bold" fill="#334">SCENARIO</text>
+  <text x="556" y="248" font-size="13" fill="#222">23:10 set 00:30, press top: GOODNIGHT, screen off.</text>
+  <text x="556" y="266" font-size="13" fill="#222">00:51 finally leaves. 03:10 back for 4 minutes.</text>
+  <text x="556" y="284" font-size="13" fill="#222">07:00 screen glows red. Top: "Missed by 26 min,</text>
+  <text x="556" y="302" font-size="13" fill="#222">left at 00:51, came back once at 03:10."</text>
+
+  <!-- MODEL / TASK -->
+  <rect x="40" y="340" width="420" height="120" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="56" y="364" font-size="14" font-weight="bold" fill="#334">MODEL</text>
+  <text x="56" y="388" font-size="13" fill="#222">Promise + chair log. Code works out when you left,</text>
+  <text x="56" y="406" font-size="13" fill="#222">returns, minutes after curfew and blind spots, then</text>
+  <text x="56" y="424" font-size="13" fill="#222">a verdict. Qwen only rewords those facts, and is</text>
+  <text x="56" y="442" font-size="13" fill="#222">overruled if it changes a time.</text>
+
+  <rect x="540" y="340" width="420" height="120" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="556" y="364" font-size="14" font-weight="bold" fill="#334">TASK</text>
+  <text x="556" y="388" font-size="13" fill="#222">Night (a few seconds): bottom to set the time, top to hand over.</text>
+  <text x="556" y="406" font-size="13" fill="#222">Morning: glance at the color; press top to read why;</text>
+  <text x="556" y="424" font-size="13" fill="#222">hold bottom to turn the screen off.</text>
+
+  <!-- DISPLAY / CONTROL -->
+  <rect x="40" y="480" width="420" height="140" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="56" y="504" font-size="14" font-weight="bold" fill="#334">DISPLAY</text>
+  <text x="56" y="528" font-size="13" fill="#222">Full-screen color: green = kept, red = missed, amber = unsure.</text>
+  <text x="56" y="546" font-size="13" fill="#222">PiTFT, 3 lines: verdict (green/red) / left at / returns.</text>
+  <text x="56" y="564" font-size="13" fill="#222">Qwen's message on the screen, a page per press.</text>
+  <text x="56" y="582" font-size="13" fill="#222">Backlight off all night. No sound, no servo.</text>
+
+  <rect x="540" y="480" width="420" height="140" rx="8" fill="#f4f5fb" stroke="#99a"/>
+  <text x="556" y="504" font-size="14" font-weight="bold" fill="#334">CONTROL</text>
+  <text x="556" y="528" font-size="13" fill="#222">Mini PiTFT buttons (Lab 2, as in our clock):</text>
+  <text x="556" y="546" font-size="13" fill="#222">  bottom = curfew +15 min; hold 2 s = end night / finish</text>
+  <text x="556" y="564" font-size="13" fill="#222">  top = goodnight, peek at night, Qwen's message</text>
+  <text x="556" y="582" font-size="13" fill="#222">(earlier tries: Qwiic joystick, then a camera wave)</text>
+  <text x="556" y="600" font-size="13" fill="#222">Overnight the webcam only logs, one look / 10 s.</text>
+</svg>

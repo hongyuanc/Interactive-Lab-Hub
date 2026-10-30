@@ -119,8 +119,109 @@ This run shows that getting the whole pipeline to execute does not guarantee an 
 
 ---
 
+# Part 2: Desk Curfew
+
+Desk Curfew holds you to a bedtime promise. Before bed, you set a curfew with the Mini PiTFT's buttons. Overnight, the webcam watches the empty desk chair (never the bed). In the morning, the screen lights up green if the chair stayed empty after curfew and red if not, and the top button shows a short message from Qwen. The device is just the Pi, the webcam and the PiTFT.
+
+## Part F.
+### Storyboard and ideas
+
+The problem: saying "I'll be in bed by 12:30", then staying at the desk until 2 and never knowing how late it got. Desk Curfew turns the promise into one question the camera can answer: was anyone in the chair after the promised time?
+
+We also considered a sleep-turn counter (from our Part C note), a fridge-raid log and a doorway counter. The first points a camera at a bed, the second watches roommates who never agreed and needs to tell people apart, which Part E showed the detector cannot do, and the third answers a question nobody asks in the morning. Desk Curfew builds on the one-person detection that worked in Part E.
+
+![Desk Curfew storyboard: set the curfew before bed, the camera watches the empty chair overnight, and the screen reports in the morning](assets/storyboard.svg)
+
+![Desk Curfew Verplank diagram](assets/verplank.svg)
+
+## Prep for Part 2
+
+Jovian said the storyboard was good overall but that the device's response could be improved. We put most of our later changes into the morning response: the whole screen now turns green or red so the answer can be read from bed, the details and Qwen's message appear only when you ask with the top button, and Qwen's wording is checked so it cannot drop the verdict or change a time.
+
+The device sits on the small round table next to my desk, with the webcam facing my desk and chair; the bed is behind it and out of view. I am the person being recorded and agreed to it, and the snapshots are deleted after the demo.
+
+<img src="assets/photos/0-placement.jpg" width="360" alt="The webcam on a round orange table, facing a desk and office chair">
+
+*Where the device spends the night: the webcam faces the desk chair.*
+
+Part E showed where the pipeline breaks, so we never ask Qwen to count. [`night_report.py`](night_report.py) calculates every time and duration in code, and Qwen only rewords the result. [`curfew.py`](curfew.py) discards Qwen's version if it changes a time, drops the verdict, or speaks as the person. The report says "someone", not who, since the detector cannot tell people apart. Short gaps in detection are merged, glimpses under 30 seconds are ignored but mentioned, and a heartbeat every ten minutes lets the report say when the camera was not watching.
+
+The hand-off control went through three versions: the Qwiic joystick from Lab 4 (one more part to wire), then a wave at the camera using YOLO's pose model ([`wave_detect.py`](wave_detect.py)), which missed too many real waves and could not set a time, and finally the PiTFT's two buttons, as in our Lab 2 clock. Buttons are reliable, and the screen's backlight can turn fully off at night.
+
+## Part G.
+### The interaction before
+
+The bottom button moves the curfew 15 minutes later, and the top button hands the night over. The device saves the promise, shows `GOODNIGHT` for three seconds, then turns the screen off so it stays dark all night. A press of the top button at night shows the curfew; holding the bottom button ends the night early.
+
+<img src="assets/photos/1-bedtime-curfew.jpg" width="420" alt="The Mini PiTFT on the Raspberry Pi showing CURFEW 17:38, bottom: +15 min, top: goodnight, next to the webcam">
+
+*The bedtime screen during a test night.*
+
+Against Bellotti's five questions: you address the device only with a button (the camera never takes commands), the lit screen and the night-time `WATCHING` peek show it is paying attention, the actions are few, the curfew is repeated on screen before it goes dark and again in the morning, and a mistaken night can be ended with a long press. Missed detections and camera gaps are reported, not hidden.
+
+## Part H.
+### The observant system at night
+
+![Desk Curfew pipeline from webcam to morning report](assets/pipeline.svg)
+
+After the hand-off, [`curfew.py`](curfew.py) runs the lab's [`overnight.py`](overnight.py): one look every 10 seconds, people only, using the Part E `interpret()`. With the camera on the chair, any person in view means someone is at the desk. The log records changes plus a heartbeat, and is saved in `nights/` with the promise. [`test_night_report.py`](test_night_report.py) checks the morning calculations on made-up nights.
+
+It needs the Lab 2 PiTFT library and `gpiod`, and the Lab 2 boot script must be stopped first because it holds the screen:
+
+```
+(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ pip install adafruit-circuitpython-rgb-display 'gpiod>=2.2.2,<3'
+(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ pkill -f screen_boot_script.py
+(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ tmux new -s night
+(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ python curfew.py --curfew 00:30 --morning 08:00
+```
+
+<img src="assets/photos/2-night-peek.jpg" width="320" alt="A finger pressing the top PiTFT button; the screen shows WATCHING, curfew 17:38, until 17:40">
+
+*Peeking at night; otherwise the screen stays dark.*
+
+## Part I.
+### The interaction after
+
+When the night ends, the whole screen turns green (kept), red (missed) or amber (no data), with a short summary such as `MISSED +26 min / left 00:51 / back 1x`. It stays lit so it can be read from bed. The top button pages through Qwen's message, and a long press on the bottom button turns the screen off. The device never makes a sound, and a quiet night is reported plainly as a quiet night. We dropped the servo flag and spoken report from earlier drafts: the color does the flag's job, and our Pi had no speaker.
+
+We ran two fake nights on October 29. In the first, Qwen wrote *"I was at the desk at 16:52, but it was already late by 16:53 when I stopped."* It kept the times, so it passed our times-only check, but it speaks as the device and never says the curfew was missed. The check now also requires the verdict and rejects first-person answers: the same lesson as Parts D and E. The second night was the first with the PiTFT working, and it revealed one more fix: the end time was a minute early because the log only records changes, so `curfew.py` now logs when it stops.
+
+<img src="assets/photos/3-morning-writing-report.jpg" width="260" alt="PiTFT showing MISSED +1 min, writing report...">
+
+*Qwen writing the message (16.9 s).*
+
+<img src="assets/photos/4-morning-missed.jpg" width="260" alt="PiTFT filled red: MISSED +1 min, left 17:39, no returns">
+
+*The red summary.*
+
+<img src="assets/photos/5-message-page-1.jpg" width="260" alt="PiTFT showing page 1 of 2 of the morning message">
+
+*Qwen's message, page 1.*
+
+<img src="assets/photos/6-message-page-2.jpg" width="260" alt="PiTFT showing page 2 of 2: Nobody came back before I stopped at 17:39">
+
+*Page 2, with the end-time error we then fixed.*
+
+The video in the final documentation shows a full hand-off and morning from a third test night, this time with a green result.
+
+## Final documentation
+
+It looks like a Pi with the PiTFT on top and a webcam facing the desk chair, dark all night and green or red in the morning. It works like the pipeline in Part H, and acts like the hand-off in Part G and the reveal in Part I.
+
+The video shows the whole system in two clips, filmed on a shortened test night so that bedtime and morning are a few minutes apart. In the first clip, the screen shows a curfew of 18:30. Pressing the top button brings up `GOODNIGHT` with the curfew and the time it will stop watching (18:32), and then the screen goes dark; the clip ends on the webcam facing the empty desk chair. In the second clip, the night is over and the screen is green: `CURFEW KEPT`, `empty from 18:29`, `no returns`, because nobody sat in the chair during the test night.
+
+<video src="assets/video/1-bedtime.mp4" controls width="320"></video>
+
+[Clip 1: bedtime, setting the curfew and saying goodnight](assets/video/1-bedtime.mp4)
+
+<video src="assets/video/2-morning.mp4" controls width="320"></video>
+
+[Clip 2: morning, the green screen and Qwen's message](assets/video/2-morning.mp4)
+
+---
+
 <details>
-<summary>Part 2 instructions — to be completed</summary>
+<summary>Original Part 2 instructions (delete before submitting)</summary>
 
 # Lab 5 Part 2: Overnight Sensation
 
