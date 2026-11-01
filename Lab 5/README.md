@@ -204,6 +204,28 @@ We ran two fake nights on October 29. In the first, Qwen wrote *"I was at the de
 
 The video in the final documentation shows a full hand-off and morning from a third test night, this time with a green result.
 
+### Real overnight run — October 31–November 1, 2026
+
+We ran the system overnight on Hong's Pi using the terminal fallback and a background service, so recording continued independently of SSH. The earlier photos and videos show the PiTFT interaction on our teammate's setup. This run sampled the webcam approximately every 10 seconds and saved only text; no overnight photos or videos were saved.
+
+| Item | Recorded result |
+|---|---|
+| Start | October 31, 11:56:30 PM EDT |
+| Automatic stop | November 1, 8:00:00 AM EST |
+| Elapsed recording time | 9 hours, 3 minutes, 30 seconds |
+| Chosen curfew | November 1, 12:30 AM EDT |
+| Log entries | 204 detection changes, 55 heartbeats, and 1 stop marker |
+| Longest gap between entries | 10 minutes, 9 seconds; none exceeded the 15-minute logging-gap threshold |
+| Calculated result | `MISSED +1 h 55 min`, with 3 return groups |
+
+The clocks went back during this night, so the raw log, settings, and generated report use **UTC**. For example, the stored curfew `04:30` means 12:30 AM EDT, and the stop at `13:00` means 8:00 AM EST. The table above uses New York time. The process exited successfully after generating the morning report at about 8:00:31 AM EST.
+
+Evidence: [complete night log](nights/2026-11-01-0356/night_log.jsonl), [curfew settings](nights/2026-11-01-0356/tonight.json), [generated report and original Qwen response](nights/2026-11-01-0356/report.json), [run metadata and timezone mapping](nights/2026-11-01-0356/recording-info.json), [terminal output](nights/2026-11-01-0356/terminal.log), and [reported lighting observation](nights/2026-11-01-0356/user-observations.jsonl).
+
+The camera had a restricted side view, mainly of hands at the desk, with the bed out of the checked frame. Hong reported that the room lights were off at 1:32 AM EST; the exact switch-off time was not recorded. The Mac was configured to keep its screen on as a light source, but detection under that lighting was not independently validated. The final detection change was `nobody` at 1:29:27 AM EST, followed by heartbeats through 7:59:27 AM and the stop marker at 8:00 AM. Here, **`nobody` means no person was detected**, not proof that the chair was empty or that someone was asleep.
+
+The reported 1 hour 55 minutes is an estimate from detection intervals after curfew. The code merges gaps shorter than two minutes, so the three return groups are not three independently verified physical visits. Qwen took 30.4 seconds and incorrectly changed the verdict to "Curfew kept" and the longest stay to "just under an hour and a half." The validation rejected that response and used the calculated template instead; both versions are preserved in the report. The run demonstrates that sensing, logging, stopping, and reporting worked overnight, while the limited view and lighting constrain what the detections can establish.
+
 ## Final documentation
 
 It looks like a Pi with the PiTFT on top and a webcam facing the desk chair, dark all night and green or red in the morning. It works like the pipeline in Part H, and acts like the hand-off in Part G and the reveal in Part I.
