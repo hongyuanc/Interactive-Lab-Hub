@@ -15,6 +15,6 @@ Please place links here to the README.md's for each of your labs here:
 
 [Lab 6. Distributed Interaction — Mouse Game](Lab%206/README.md)
 
-Final Project
+[Final Project](Final%20Project/README.md)
 
 
